@@ -1,4 +1,14 @@
 {
+  "name": "Social Network API",
+  "version": "1.0.1",
+  "description": "Homework assignment for creating a social network API",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index",
+    "dev": "nodemon index",
+    "seed": "node utils/seed"
+  },
   "dependencies": {
     "express": "^4.17.3",
     "mongoose": "^6.2.4"
