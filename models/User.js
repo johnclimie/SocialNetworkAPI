@@ -11,12 +11,33 @@ const userSchema = new Schema({
         type: String,
         required: true,
         unique: true,
-        //Validating email
+        match: /.+\@.+\..+/
     }, 
-    thoughts: {
-        // array of _id values form Thought model
+    thoughts: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Thought'
+        }
+    ],
+    friends: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'User'
+        }
+    ]
+},
+{
+    toJSON: {
+        virtuals: true,
     },
-    friends: {
-        // array of _id values referenceing the User model
-    }
-})
+    id: false,
+});
+
+userSchema
+    .virtual('friendCount')
+    .get(function () {return this.friends.length;
+});
+
+const User = model('user', userSchema);
+
+module.exports = User;
