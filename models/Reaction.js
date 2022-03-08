@@ -18,7 +18,15 @@ const reactionSchema = new Schema(
         createdAt: {
             type: Date,
             default: Date.now,
-            // Use a getter method to format the timestamp on query
+            get: (dateVal) => dateVal.toLocaleDateString('en-us', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' })
         }
+    },
+    {
+        toJSON: {
+            getters: true
+        },
+        id: false,
     }
-)
+);
+
+module.exports = reactionSchema;

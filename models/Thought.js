@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const Reaction = require('./Reaction');
 
 const thoughtSchema = new Schema(
     {
@@ -10,14 +11,29 @@ const thoughtSchema = new Schema(
         createdAt: {
             type: Date,
             default: Date.now,
-            // Use a getter to format the timestamp on query
+            get: (dateVal) => dateVal.toLocaleDateString('en-us', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' })
         },
         username: {
             type: String,
             required: true
         },
-        reactions: {
-            // Array of nested documents created with the reactionSchema
-        }
+        reactions: [Reaction]
+    },
+    {
+        toJSON: {
+            virtuals: true,
+            getters: true
+        },
+        id: false,
     }
-)
+);
+
+thoughtSchema
+    .virtual('reactionCount')
+    .get(function () {return this.reactions.length
+});
+
+const Thought = model('thought', thoughtSchema);
+
+module.exports = Thought;
+
