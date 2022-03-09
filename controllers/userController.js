@@ -60,11 +60,6 @@ module.exports = {
             { $addToSet: { friends: req.params.friendId } },
             { new: true }
         )
-        .findOneAndUpdate(
-            { _id: req.params.friendId },
-            { $addToSet: { friends: req.params.userId } },
-            { new: true }
-        )
         .then((user) => 
             !user
                 ? res.status(404).json({ message: 'No user with this ID' })
@@ -76,10 +71,10 @@ module.exports = {
     // Deletes a friend from a user's friend list
     deleteFriend(req, res) {
         User.findOneAndUpdate(
-            { _id: req.params.userId },
-            { $pull: { friends: { friendId: req.params.friendId } } },
-            { runValidators: true, new: true }
-        )
+                { _id: req.params.userId },
+                { $pull: { friends: { friendId: req.params.friendId } } },
+                { runValidators: true, new: true }
+            )
             .then((user) => 
                 !user
                     ? res.status(404).json({ message: 'No user with this id'})
