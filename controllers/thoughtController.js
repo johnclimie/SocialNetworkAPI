@@ -50,14 +50,36 @@ module.exports = {
             { $set: req.body },
             { runValidators: true, new: true }
         )
-        .then((video) => 
-            !video
-                ? res.status(404).json({ message: 'No thought with this ID' })
-                : res.json(video)
-        )
-        .catch((err) => {
-            console.log(err);
-            res.status(500).json(err);
-        })
+            .then((thought) => 
+                !thought
+                    ? res.status(404).json({ message: 'No thought with this ID' })
+                    : res.json(thought)
+            )
+            .catch((err) => {
+                console.log(err);
+                res.status(500).json(err);
+            })
+    },
+
+    // Deletes an existing thought
+    deleteThought(req, res) {
+        Thought.findOneAndRemove({ _id: req.params.thoughtId })
+            .then((thought) =>
+                !thought
+                    ? res.status(404).json({ message: 'No thought with this ID'})
+                    : User.findOneAndUpdate(
+                        { thoughts: req.params.thoughtId },
+                        { $pull: { thoughts: req.params.thoughtId } },
+                        { new: true }
+                    )
+            )
+            .then((user) => 
+                !user
+                    ? res
+                        .status(404)
+                        .json({ message: 'Thought deleted, but found no user with this ID' })
+                    : res.json({ message: 'Thought successfully deleted' })
+            )
+            .catch((err) => res.status(500).json(err));
     }
 }
