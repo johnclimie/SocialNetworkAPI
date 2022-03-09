@@ -26,4 +26,30 @@ module.exports = {
             .then((dbUserData) => res.json(dbUserData))
             .catch((err) => res.status(500).json(err));
     },
+
+    // Updates a new user
+    updateUser(req, res) {
+        User.findOneAndUpdate(
+            { _id: req.params.userId },
+            { $set: req.body },
+            { runValidators: true, new: true }
+        )
+        .then((user) => 
+            !user
+                ? res.status(404).json({ message: 'No user with that ID' })
+                : res.json(user)
+        )
+        .catch((err) => res.status(500).json(err));
+    },
+
+    //Deletes a user
+    deleteUser(req, res) {
+        User.findOneAndRemove({ _id: req.params.userId })
+            .then((user) => 
+                !user
+                    ? res.status(404).json({ message: 'No user with that ID' })
+                    : res.json({ message: 'User successfully deleted' })
+            )
+            .catch((err) => res.status(500).json(err));
+    }
 };
