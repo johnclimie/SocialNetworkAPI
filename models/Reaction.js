@@ -1,5 +1,7 @@
+// Uses Mongoose to create schema
 const { Schema, Types } = require('mongoose');
 
+// Creates schema for reaction
 const reactionSchema = new Schema(
     {
         reactionId: {
@@ -29,4 +31,5 @@ const reactionSchema = new Schema(
     }
 );
 
+// Exports schema
 module.exports = reactionSchema;

@@ -1,6 +1,9 @@
+// Uses Mongoose to create schema
 const { Schema, model } = require('mongoose');
+// Uses reaction schema to enter a property
 const Reaction = require('./Reaction');
 
+// Creates a schema for thoughts
 const thoughtSchema = new Schema(
     {
         thoughtText: {
@@ -28,12 +31,14 @@ const thoughtSchema = new Schema(
     }
 );
 
+// Creates virtual property to count the amount of reactions
 thoughtSchema
     .virtual('reactionCount')
     .get(function () {return this.reactions.length
 });
 
+// Creates thought model based on thought schema
 const Thought = model('thought', thoughtSchema);
 
+// Exports thought model
 module.exports = Thought;
-

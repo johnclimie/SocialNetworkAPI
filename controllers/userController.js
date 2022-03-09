@@ -1,5 +1,7 @@
+// Requires User model
 const User = require('../models/User');
 
+// Exports controller functions
 module.exports = {
     // Gets all users
     getUsers(req, res) {

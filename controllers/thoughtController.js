@@ -1,5 +1,7 @@
+// Requires Thought and User models
 const { Thought, User } = require('../models');
 
+// Exports controller functions
 module.exports = {
     // Gets all thoughts
     getThoughts(req, res) {
