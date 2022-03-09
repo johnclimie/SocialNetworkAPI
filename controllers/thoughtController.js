@@ -15,12 +15,12 @@ module.exports = {
             .then((thought) => 
                 !thought
                     ? res.status(404).json({ message: 'No thought with this ID'})
-                    : res.json(user)
+                    : res.json(thought)
             )
             .catch((err) => res.status(500).json(err));
     },
 
-    // Creates a  new thought
+    // Creates a new thought
     createThought(req, res) {
         Thought.create(req.body)
             .then((thought) => {
@@ -41,5 +41,23 @@ module.exports = {
                 console.log(err);
                 res.status(500).json(err);
             })
+    },
+
+    // Updates an existing thought
+    updateThought(req, res) {
+        Thought.findOneAndUpdate(
+            { _id: req.params.thoughtId },
+            { $set: req.body },
+            { runValidators: true, new: true }
+        )
+        .then((video) => 
+            !video
+                ? res.status(404).json({ message: 'No thought with this ID' })
+                : res.json(video)
+        )
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json(err);
+        })
     }
 }
